@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import './App.css'
 
 const features = [
@@ -25,6 +26,30 @@ const features = [
 ]
 
 function App() {
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
+
+  useEffect(() => {
+    if (!isLoginOpen) return
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsLoginOpen(false)
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isLoginOpen])
+
+  const handleLoginSubmit = (event) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+
+    console.log({
+      email: formData.get('email'),
+      password: formData.get('password'),
+    })
+    setIsLoginOpen(false)
+  }
+
   return (
     <>
       <header className="site-header">
@@ -39,10 +64,74 @@ function App() {
           <a href="#how-it-works">How it works</a>
           <a href="#get-started">For teams</a>
         </nav>
-        <a className="button button--small button--dark" href="#get-started">
-          Get started <span aria-hidden="true">↗</span>
-        </a>
+        <div className="header-actions">
+          <button
+            className="button button--small button--login"
+            type="button"
+            onClick={() => setIsLoginOpen(true)}
+          >
+            Login
+          </button>
+          <a className="button button--small button--dark" href="#get-started">
+            Get started <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </header>
+
+      {isLoginOpen && (
+        <div
+          className="login-overlay"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setIsLoginOpen(false)
+          }}
+        >
+          <section
+            className="login-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="login-title"
+          >
+            <button
+              className="login-close"
+              type="button"
+              aria-label="Close login dialog"
+              onClick={() => setIsLoginOpen(false)}
+            >
+              ×
+            </button>
+            <span className="login-modal-mark" aria-hidden="true">d</span>
+            <p className="login-eyebrow">WELCOME BACK</p>
+            <h2 id="login-title">Good to see you.</h2>
+            <p className="login-description">
+              Log in to pick up right where you left off.
+            </p>
+            <form className="login-form" onSubmit={handleLoginSubmit}>
+              <label htmlFor="login-email">Email</label>
+              <input
+                autoComplete="email"
+                autoFocus
+                id="login-email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+              />
+              <label htmlFor="login-password">Password</label>
+              <input
+                autoComplete="current-password"
+                id="login-password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                required
+              />
+              <button className="button login-submit" type="submit">
+                Log in <span aria-hidden="true">↗</span>
+              </button>
+            </form>
+          </section>
+        </div>
+      )}
 
       <main>
         <section className="hero page-width" id="home">

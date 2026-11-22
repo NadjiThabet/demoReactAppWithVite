@@ -8,23 +8,26 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Create a VM with the latest version of Ubuntu as the runner environment
 
-    steps:
-      - name: Checkout code
+    steps: # Define the steps(operation) to be executed in the job
+      - name: Checkout code # Download the repository code to the runner
         uses: actions/checkout@v4
 
-      - name: Set up Node
+      - name: Set up Node # Set up the Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install dependencies # Install the project dependencies
+        run: npm ci # this install depenedencies using the package-lock.json file to ensure consistent installs
 
-      - name: Lint
+      - name: Lint # Run the linter to check for code style issues
         run: npm run lint
 
-      - name: Build
+      - name: Automated Tests # Run automated tests
+        run:  npm run test:run
+
+      - name: Build # Build the project
         run: npm run build
