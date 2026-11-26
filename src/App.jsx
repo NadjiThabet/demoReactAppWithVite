@@ -70,7 +70,7 @@ function App() {
             type="button"
             onClick={() => setIsLoginOpen(true)}
           >
-            Login
+            Login0
           </button>
           <a className="button button--small button--dark" href="#get-started">
             Get started <span aria-hidden="true">↗</span>
@@ -103,7 +103,7 @@ function App() {
             <p className="login-eyebrow">WELCOME BACK</p>
             <h2 id="login-title">Good to see you.</h2>
             <p className="login-description">
-              Log in to pick up right where you left off.
+              Log in to pick up right where you left off!
             </p>
             <form className="login-form" onSubmit={handleLoginSubmit}>
               <label htmlFor="login-email">Email</label>

@@ -1,6 +1,6 @@
 name: CI
 
-on:
+on: # Trigger the workflow on push or pull request events but only for the main branch (when this script run)
   push:
     branches: [main]
   pull_request:
@@ -10,8 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest # Create a VM with the latest version of Ubuntu as the runner environment
 
-    steps: # Define the steps(operation) to be executed in the job
-      - name: Checkout code # Download the repository code to the runner
+    steps: # Define the steps (operation) to be executed in the job
+      - name: Checkout code # Download (Clone) the repository code to the runner
         uses: actions/checkout@v4
 
       - name: Set up Node # Set up the Node.js environment
@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies # Install the project dependencies
         run: npm ci # this install depenedencies using the package-lock.json file to ensure consistent installs
 
-      - name: Lint # Run the linter to check for code style issues
+      - name: Lint # Run the linter to check for code style issues, its main purpose is to detect code-quality issues and enforce coding standards.
         run: npm run lint
 
       - name: Automated Tests # Run automated tests
